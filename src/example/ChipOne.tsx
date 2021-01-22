@@ -1,6 +1,7 @@
 import * as React from "react";
+
+// import { useChip } from "chipper";
 import { useChip } from "../lib";
-import { mockAsync } from "../lib/utils";
 import { useRenderCounter } from "./Counter";
 
 type User = {
@@ -24,17 +25,15 @@ export const ChipOne: React.FC = () => {
   };
   const onMockClick = () => {
     user.set(
-      (user) => {
-        user.name = "pierogi";
-      },
+      { uid: "asd", name: "rongeugr" },
       {
         timeout: 2000,
       }
     );
   };
   const onAsyncClick = async () => {
-    const someAsyncRequest = mockAsync({ uid: "56789", name: "tigger" }, 1234);
-    user.set(someAsyncRequest);
+    // const someAsyncRequest = mockAsync({ uid: "56789", name: "tigger" }, 1234);
+    // user.set(someAsyncRequest);
   };
   const onTheme = () => {
     user.api.set<Theme>({ dark: true, color: "bobololo" }, "themes");

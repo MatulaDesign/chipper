@@ -1,7 +1,7 @@
 import * as React from "react";
-
+// import { useChip } from "chipper";
 import { useChip } from "../lib";
-import { mockAsync } from "../lib/utils";
+
 import { useRenderCounter } from "./Counter";
 
 type Theme = {
@@ -13,7 +13,7 @@ type User = {
   name: string;
 };
 
-const compKey = "theme";
+const compKey = "themes";
 export const ChipTwo: React.FC = () => {
   const [count] = useRenderCounter(compKey);
   const theme = useChip<Theme>(compKey);
@@ -33,8 +33,8 @@ export const ChipTwo: React.FC = () => {
     );
   };
   const onAsyncClick = async () => {
-    const someAsyncRequest = mockAsync({ dark: true, color: "worvnjwrnv" }, 1234);
-    theme.set(someAsyncRequest);
+    // const someAsyncRequest = mockAsync({ dark: true, color: "worvnjwrnv" }, 1234);
+    // theme.set(someAsyncRequest);
   };
   const onUser = () => {
     theme.api.set<User>({ uid: "orwue777", name: "call me maybe" }, "user");

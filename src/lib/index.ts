@@ -3,6 +3,31 @@ import * as React from "react";
 
 import * as Utils from "./utils";
 
+export type IError = Error | string;
+export type IStatus = {
+  type: "LOADING" | "IDLE" | "SUCCESS" | "ERROR";
+  message?: IError;
+};
+export type IData = Record<string, unknown> | string;
+export type IQue<T = IData> = { key: string; update: IUpdater<T> };
+export type IQueue<T = IData> = [string, T][];
+export type IUpdater<T = IData> = IChip<T> | ((chip: IChip<T>) => IChip<T>);
+export interface IOptions<T = any> {
+  timeout?: number;
+  onInit?: () => void;
+  onSuccess?: (resp: T) => void;
+  onError?: (error: IError) => void;
+  wrapResp?: (...args: any[]) => T;
+}
+export interface IChip<T = IData> {
+  data: T | undefined;
+  status: IStatus;
+}
+export interface IQuery {
+  cut: (k?: string) => boolean;
+  get: (k?: string) => IChip;
+  set: <T>(chip: T | IChip<T>, k?: string) => void;
+}
 export type IDraft<T = IData> = (data: Draft<T>) => void;
 type ISet<T = IData> = T | IDraft<T>;
 export type IUpdate<T = IData> = ISet<T> | Promise<T | void>;
@@ -52,7 +77,7 @@ export class ChipperConveyor extends ChipperQueue {
 
 const Chipper = new ChipperConveyor();
 
-function ChipperOperator<T = IData>(chipper: ChipperConveyor, key: string, data?: T) {
+function chipperOperator<T = IData>(chipper: ChipperConveyor, key: string, data?: T) {
   const query = chipper.queryQueue(key, data);
   const chip = query.get();
   const [, dispatch] = React.useState(chip) as [never, IDispatch];
@@ -69,7 +94,7 @@ function ChipperOperator<T = IData>(chipper: ChipperConveyor, key: string, data?
   return query as IQuery;
 }
 
-function ChipperService<T = IData>(Query: IQuery, key: string) {
+function chipperService<T = IData>(Query: IQuery, key: string) {
   const chop = Query.get() as IChip;
   const isLoading = chop?.status?.type === "LOADING";
 
@@ -94,7 +119,7 @@ function ChipperService<T = IData>(Query: IQuery, key: string) {
       const chip = Query.get(k);
       if (!chip) console.error(`Chipper: chip "${k}" doesn't exist`);
       else if (chip.data) {
-        const check = Utils.equalityCheck(chip.data, data, true);
+        const check = Utils.equalityCheck(chip.data, data);
         if (check === "update") Query.set(data, k || key);
         if (check === "warn") {
           console.error(`Chipper: You're trying to change "${k || key}" data shape`);
@@ -107,13 +132,14 @@ function ChipperService<T = IData>(Query: IQuery, key: string) {
 }
 
 export function useChipper<T = IData>(instance: ChipperConveyor, key: string, data?: T) {
-  const Query = ChipperOperator<T>(instance, key, data) as IQuery;
-  return ChipperService<T>(Query, key);
+  const Query = chipperOperator<T>(instance, key, data) as IQuery;
+  return chipperService<T>(Query, key);
 }
 
 export function useChip<T = IData>(key: string, data?: T) {
-  const Query = ChipperOperator<T>(Chipper, key, data) as IQuery;
-  return ChipperService<T>(Query, key);
+  const Query = chipperOperator<T>(Chipper, key, data) as IQuery;
+  return chipperService<T>(Query, key);
 }
 
+export { Utils };
 export default Chipper;

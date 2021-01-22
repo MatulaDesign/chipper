@@ -1,8 +1,9 @@
 import * as React from "react";
 
-import { NewChipper } from "../App";
+// import { useChipper } from "chipper";
 import { useChipper } from "../lib";
-import { mockAsync } from "../lib/utils";
+
+import { NewChipper } from "../App";
 import { useRenderCounter } from "./Counter";
 
 type Apple = {
@@ -23,7 +24,7 @@ export const ChipDetached: React.FC = () => {
   const onMockClick = () => {
     apple.set(
       (apple) => {
-        apple.color = "asdasds";
+        apple.color = "i don't know";
       },
       {
         timeout: 2000,
@@ -31,8 +32,8 @@ export const ChipDetached: React.FC = () => {
     );
   };
   const onAsyncClick = async () => {
-    const someAsyncRequest = mockAsync({ shiny: false, color: "hydy" }, 1234);
-    apple.set(someAsyncRequest);
+    // const someAsyncRequest = mockAsync({ shiny: false, color: "hydy" }, 1234);
+    // apple.set(someAsyncRequest);
   };
   const onOther = () => {
     apple.api.set({ uid: "099998", name: "ko9876" }, "user");

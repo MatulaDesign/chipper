@@ -1,28 +1,23 @@
 import produce from "immer";
 
-import { IUpdate, IDraft } from ".";
+import { IUpdate, IDraft, IData, IChip, IQuery, IOptions } from ".";
 
 export function newChip<T = IData>(data: T) {
   return { data, status: { type: "IDLE" } } as IChip;
 }
 
-export function equalityCheck(chop: any, chip: any, isApi?: boolean) {
+export function equalityCheck(chop: any, chip: any) {
   const isObject = (v: IData) => typeof v === "object";
-  const chopDataKeys = isObject(chop) ? Object.keys(chop).sort() : [];
-  const chipDataKeys = isObject(chip) ? Object.keys(chip).sort() : [];
+  const objectKeys = (o: IData) => (isObject(o) ? Object.keys(o).sort() : []);
   const isEqual = (chop: any, chip: any) => JSON.stringify(chop) === JSON.stringify(chip);
 
-  if (isApi) {
-    if (isEqual(chopDataKeys, chipDataKeys)) {
-      if (isEqual(chop, chip)) return "skip";
-      return "update";
-    } else return "warn";
-  } else {
-    if (isEqual(chopDataKeys, chipDataKeys)) {
-      if (isEqual(chop, chip)) return "skip";
-      return "update";
-    } else if (!chop) return "update";
-  }
+  if (!chop) return "update"; // update if empty
+  // check if objects have same keys
+  if (isEqual(objectKeys(chop), objectKeys(chip))) {
+    // check if objects are equal
+    if (isEqual(chop, chip)) return "skip";
+    return "update";
+  } else return "warn";
 }
 
 export function chopper<T = IData>(chop: IChip, update: IUpdate<T>) {
