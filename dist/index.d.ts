@@ -1,8 +1,8 @@
-import { Draft } from "immer";
-import * as Utils from "./utils";
+import { Draft } from 'immer';
+import * as Utils from './utils';
 export declare type IError = Error | string;
 export declare type IStatus = {
-    type: "LOADING" | "IDLE" | "SUCCESS" | "ERROR";
+    type: 'LOADING' | 'IDLE' | 'SUCCESS' | 'ERROR';
     message?: IError;
 };
 export declare type IData = Record<string, unknown> | string;
@@ -29,8 +29,9 @@ export interface IQuery {
     set: <T>(chip: T | IChip<T>, k?: string) => void;
 }
 export declare type IDraft<T = IData> = (data: Draft<T>) => void;
-declare type ISet<T = IData> = T | IDraft<T>;
+export declare type ISet<T = IData> = T | IDraft<T>;
 export declare type IUpdate<T = IData> = ISet<T> | Promise<T | void>;
+export declare type IDispatch<T = IData> = (chip: Draft<IChip<T>>) => IChip<T>;
 declare class ChipperQueue {
     queue: IQue[];
     enqueue(key: string, update: IUpdater): void;

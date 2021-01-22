@@ -64,8 +64,5 @@ const MyComponentB = () => {
 }
 ```
 
-<br>
-
----
-
-<br>
+[README](HELLO.md)<br>
+[READ THE DOCS](CHIPPER.md)
