@@ -59,11 +59,9 @@ And that's pretty much it. Congratulations, you just spent 10 seconds setting up
 
 [CLICK HERE](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/example.md) for more elaborate example or [CLICK HERE](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/CHIPPER.md) to read the docs
 
-## TODO
+### TODO
 
 Chipper is ready to use (I wouldn't say it's production ready, but I am going to use it in production when I make sure it doesn't suck). You guys' help would speed things up, if you want to contribute. Todos below are sugary improvements, which would further sweeten our time with this tool:
-
-<br>
 
 - implement developer tools
 - unit tests (you're not my real mom!)
@@ -76,4 +74,4 @@ Chipper is ready to use (I wouldn't say it's production ready, but I am going to
 
 ---
 
-## [READ THE DOCS](./CHIPPER.md)
+### [READ THE DOCS](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/CHIPPER.md)

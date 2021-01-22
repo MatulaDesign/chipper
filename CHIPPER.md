@@ -157,8 +157,6 @@ const MyComponent = () => {
 }
 ```
 
-<br>
-
 ### 3) `ChipperConveyor`
 
 `Chipper` is an instance of `ChipperConveyor` class. `Chipper` is a global singleton that can be accessed using `useChip` hook. In case you want to create your own singleton that will exist only for specific element in your code, you can import `ChipperConveyor` and use `useChipper` to access this secluded data. Have a look at `Chipper`
@@ -174,8 +172,6 @@ FruitBasket.createQueue([
   ['pear', { shape: 'pear-ly', tastes: 'poor-ly' }],
 ]);
 ```
-
-<br>
 
 ### 4) `useChipper`
 
@@ -217,8 +213,6 @@ const chip = {
 ```
 
 ... stored inside a `Map()` instance like so: `Map().set('key', chip)`
-
-<br>
 
 ### 1) `Chipper`/`ChipperConveyor` props
 
@@ -413,6 +407,5 @@ const chip = {
   **NOTE:** I recommend this approach only if you know what you're doing, because passing incorrect data using this method will fuck shit up.
 
 <br>
-<br>
 
-## [BACK TO README](../../README.md)
+### [BACK TO README](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/README.md)
