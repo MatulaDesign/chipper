@@ -65,7 +65,7 @@ And that's pretty much it. Congratulations, you just spent 10 seconds setting up
 
 ## What now?
 
-[CLICK HERE](example.md) for more elaborate example or [CLICK HERE](CHIPPER.md) to read the docs
+[CLICK HERE](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/example.md) for more elaborate example or [CLICK HERE](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/CHIPPER.md) to read the docs
 
 <br>
 
