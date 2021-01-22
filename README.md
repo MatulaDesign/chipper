@@ -1,16 +1,12 @@
 # Chipper
 
-### Chipper is a micro state-management tool aimed at perfect (for me 🤡 ) developer experience and idiot-proof 🙈 🙉 🙊 (because I need it) API.<br>
+Chipper is a micro state-management tool aimed at perfect (for me 🤡 ) developer experience and idiot-proof 🙈 🙉 🙊 (because I need it) API.<br>
 
-### Chipper is my personal experiment. I needed to learn about classes and observables. Context API has been great for me in all my personal projects, but using observables solves more problems.
-
-<br>
-
-## [CLICK HERE](./CHIPPER.md) to read the docs
+Chipper is my personal experiment. I needed to learn about classes and observables. Context API has been great for me in all my personal projects, but using observables solves more problems.
 
 <br>
 
-# Wat? 🗿
+## Wat? 🗿
 
 - minimal setup
 - written with TS
@@ -22,30 +18,30 @@
 
 <br>
 
-# Why?
+## Why?
 
-### I got bored with conventional solutions (looking at you, Redux). Don't get me wrong, [Redux](https://redux.js.org/) is a great tool (especially now, ever since [redux-toolkit](https://redux-toolkit.js.org/) is a thing), but setting up global store and making it work with [TypeScript](https://www.typescriptlang.org/) is always a treat...<br>
+I got bored with conventional solutions (looking at you, Redux). Don't get me wrong, [Redux](https://redux.js.org/) is a great tool (especially now, ever since [redux-toolkit](https://redux-toolkit.js.org/) is a thing), but setting up global store and making it work with [TypeScript](https://www.typescriptlang.org/) is always a treat...<br>
 
-### Since I don't get to set up fresh redux store very often, I always have to re-learn the docs in order to have the whole thing working the way I like it. Well, not anymore.
+Since I don't get to set up fresh redux store very often, I always have to re-learn the docs in order to have the whole thing working the way I like it. Well, not anymore.
 
-### Chipper's API reflects my idea of a perfect (experience may vary 🤷) state-management tool that handles async and TypeScript out of the box with microscopic setup.
+Chipper's API reflects my idea of a perfect (experience may vary 🤷) state-management tool that handles async and TypeScript out of the box with microscopic setup.
 
 <br>
 
-# How?
+## How?
 
 In the terminal
 
 ```javascript
-yarn add chipper
+yarn add @lumberyard/chipper
 // or
-npm install chipper
+npm install @lumberyard/chipper
 ```
 
 In the code
 
 ```javascript
-import Chipper, { useChip } from "chipper";
+import Chipper, { useChip } from "@lumberyard/chipper";
 
 Chipper.createQueue([
   ["user", { uid: "12345", name: "piglet" }],
@@ -66,91 +62,16 @@ const MyComponent = () => {
 And that's pretty much it. Congratulations, you just spent 10 seconds setting up your global state. Time well spent, now go, procrastinate some more 🤡
 
 <br>
-<br>
-<br>
 
-# What now?
+## What now?
 
-## Scroll down for more elaborate example or [CLICK HERE](./CHIPPER.md) to read the docs
-
-<br>
-<br>
-
-## More elaborate example
-
-```javascript
-import Chipper, { useChip } from "chipper";
-
-Chipper.createQueue([
-  ["user", { uid: "12345", name: "piglet" }],
-  ["theme", { dark: true, color: "pink" }],
-]);
-
-// for typescript
-type User = { uid: string, name: string };
-type Theme = { dark: boolean, color: string };
-```
-
-```javascript
-const MyComponentA = () => {
-  const { data, status, set, api } = useChip<User>('user');
-
-  console.log(data); // { uid: "12345", name: "piglet" }
-  console.log(status); // { type: "IDLE", message: undefined }
-
-  set((user) => {
-    user.name = 'pooh'
-  });
-  console.log(data); // { uid: "12345", name: "pooh" }
-  console.log(status); // { type: "IDLE", message: undefined }
-
-  // or
-  set({ uid: "54321", name: "pooh" }, {
-    timeout: 2000,
-  })
-  console.log(data); // after two seconds { uid: "54321", name: "pooh" }
-  console.log(status); // after two seconds { type: "SUCCESS", message: undefined }
-
-  // or
-  set(someAsyncFunction, {
-    onSuccess: (response) => shareGoodNews(to, response),
-  })
-  console.log(data); // after successfull async { uid: "xxx", name: "xxx" }
-  console.log(status); // after successfull async { type: "SUCCESS", message: undefined }
-
-  // or
-  api.set<Theme>('whatever you want', 'theme')
-  // aside from TS throwing an error here and Chipper not letting you set this data (new shape doesn't match original scheme) it does nothing to MyComponentA, but re-renders MyComponentB (or any other) subscribed to "theme" chip
-
-  return (...)
-}
-```
-
-```javascript
-const MyComponentB = () => {
-  const { data, status, set } = useChip<Theme>('theme');
-
-  console.log(data); // { dark: true", color: "pink" }
-  console.log(status); // { type: "IDLE", message: undefined }
-
-  // after action taken in MyComponentA
-
-  console.log(data); // 'whatever you want'
-  console.log(status); // { type: "IDLE", message: undefined }
-
-  return (...)
-}
-```
-
-<br>
-
----
+[CLICK HERE](example.md) for more elaborate example or [CLICK HERE](CHIPPER.md) to read the docs
 
 <br>
 
 ## TODO
 
-### Chipper is ready to use (I wouldn't say it's production ready, but I am going to use it in production when I make sure it doesn't suck). You guys' help would speed things up, if you want to contribute. Todos below are sugary improvements, which would further sweeten our time with this tool:
+Chipper is ready to use (I wouldn't say it's production ready, but I am going to use it in production when I make sure it doesn't suck). You guys' help would speed things up, if you want to contribute. Todos below are sugary improvements, which would further sweeten our time with this tool:
 
 <br>
 
