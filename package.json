@@ -1,5 +1,5 @@
 {
-  "name": "chipper",
+  "name": "@lumberyard/chipper",
   "version": "1.0.0",
   "description": "A minimalistic state-management tool for your React needs",
   "author": "Mat Sas",
