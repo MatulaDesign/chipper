@@ -1,11 +1,13 @@
 # Chipper Docs
 
+I intend these docs to be as thorough as possible, but expect some less important features not being described, because I simply didn't think about them at the moment of writing.
+
 ## Chipper elements
 
 The tool consists of four exported elements: [Chipper](#1-chipper), [ChipperConveyor](#3-chipperconveyor), [useChip](#2-usechip) and [useChipper](#4-usechipper);
 You don't have to use hooks, because state can be accessed from outside of react components. It won't be reactive though, so no re-rendering logic to keep everything in check.
 
-## 1) `Chipper`
+### 1) `Chipper`
 
 First, let's set up the initial store (you can omit this step):
 
@@ -58,7 +60,7 @@ If you work with React/React-Native do yourself a favor and `useChip`. It's easi
 `useChip` handles re-rendering and subscription to state of matching components that use it.<br>
 This hook works only with exported `Chipper` class instance.
 
-### a) read
+#### a) read
 
 Use `data` and/or `status` props from the returned object to read the chip.
 `data` can be changed by you, `status` is handled by the plugin:
@@ -76,7 +78,7 @@ const MyComponent = () => {
 }
 ```
 
-### b) write
+#### b) write
 
 You can use `useChip` itself to add data to your state by passing something as a second argument. If the chip with given key exists, the second argument is ignored, because `Chipper.createQueue()` takes precedence.
 
@@ -133,7 +135,7 @@ const MyComponent = () => {
 }
 ```
 
-### c) meddle
+#### c) meddle
 
 `useChip` also introduces `api` property with access to some lower level `Chipper` methods. You can go naughty and put your hands on state of other chips from here. This re-renders all components subscribed to the piece of state that's being changed.<br>
 Please be advised that `api.set()` is similar to `set()` method: it'll inform you when you try to overwrite an existing chip's data scheme.
@@ -157,7 +159,7 @@ const MyComponent = () => {
 
 <br>
 
-## 3) `ChipperConveyor`
+### 3) `ChipperConveyor`
 
 `Chipper` is an instance of `ChipperConveyor` class. `Chipper` is a global singleton that can be accessed using `useChip` hook. In case you want to create your own singleton that will exist only for specific element in your code, you can import `ChipperConveyor` and use `useChipper` to access this secluded data. Have a look at `Chipper`
 
@@ -175,7 +177,7 @@ FruitBasket.createQueue([
 
 <br>
 
-## 4) `useChipper`
+### 4) `useChipper`
 
 This hook will work with both `Chipper` and `ChipperConveyor`. It is `useChip` on steroids, with the exact same API.
 
@@ -200,7 +202,7 @@ const MyComponent = () => {
 }
 ```
 
-<br>
+---
 
 ## Chipper API
 
@@ -218,9 +220,9 @@ const chip = {
 
 <br>
 
-## 1) `Chipper`/`ChipperConveyor` props
+### 1) `Chipper`/`ChipperConveyor` props
 
-- ### `createQueue(queue: IQueue): void`
+- #### `createQueue(queue: IQueue): void`
 
   This method loads data into Chipper. It takes the tuple's second item (value/data) and turns it into a `chip` that gets stored inside `Map()` instance
 
@@ -228,7 +230,7 @@ const chip = {
   Chipper.createQueue([['user', { uid: '12345', name: 'piglet' }]]);
   ```
 
-- ### `queryQueue(key: string, data: IData): IQuery`
+- #### `queryQueue(key: string, data: IData): IQuery`
 
   This method returns an object:
 
@@ -258,7 +260,7 @@ const chip = {
   api.cut('theme'); // removes 'theme' state
   ```
 
-- ### `enqueue(key: string, update: IUpdater): void`
+- #### `enqueue(key: string, update: IUpdater): void`
 
   This method adds updated data to Chipper's queue (or subscribes to state, if you will).
   In case of Chipper, `update` is derived from `React.useState()`'s dispatch, but you could throw in here whatever value, if you want to reuse the logic for something else.
@@ -267,7 +269,7 @@ const chip = {
   Chipper.enqueue(key, updater);
   ```
 
-- ### `dequeue(update: IUpdater): void`
+- #### `dequeue(update: IUpdater): void`
 
   This method removes subscription to state.
 
@@ -275,7 +277,7 @@ const chip = {
   Chipper.dequeue(updater);
   ```
 
-- ### `convey(key: string, chip: IChip): void`
+- #### `convey(key: string, chip: IChip): void`
 
   This method updates all interested chips.
 
@@ -283,20 +285,18 @@ const chip = {
   Chipper.convey(key, chip);
   ```
 
-- ### `queue: IQue[]`
+- #### `queue: IQue[]`
 
   Queue is an array of updated values that we use to pinpoint which components should be updated.
 
-- ### `chips: Map<string, IChip>[]`
+- #### `chips: Map<string, IChip>[]`
 
   Chips is a Map object storing the state.
 
-<br>
+### 2) `useChip`/`useChipper` props
 
-## 2) `useChip`/`useChipper` props
-
-- ### `data: T = IData`
-- ### `status: IStatus`
+- #### `data: T = IData`
+- #### `status: IStatus`
 
   `status` is an object...
 
@@ -309,7 +309,7 @@ const chip = {
 
   ...that will be modified internally by the plugin if you use the hook's `set()` method either with an async function passed as data or with `timeout` option for "regular" data. Chipper [doesn't give you methods\*](<#api-chipper.queryqueue()>) to update the `status` manually.
 
-- ### `set: (update: IUpdate, options?: IOptions): void`
+- #### `set: (update: IUpdate, options?: IOptions): void`
 
   `set` is a mighty method that handles adding sync/async data to your state. It integrates easily with the rest of the tools available in Chipper.<br>
   Async actions run with `useChip`'s `set` method are handled by a javascript generator function to make sure there are no memory leaks when/if the component unmounts before the function finishes.
@@ -393,7 +393,7 @@ const chip = {
   })
   ```
 
-- ### `api: Chipper.queryQueue()`
+- #### `api: Chipper.queryQueue()`
 
   The `api` property is taken 1:1 from `queryQueue()` method used in `Chipper` class, however, since it's used inside `useChip`, it informs other components about changes made to their state so they can re-render and update properly.
 

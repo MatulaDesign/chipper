@@ -4,8 +4,6 @@ Chipper is a micro state-management tool aimed at perfect (for me 🤡 ) develop
 
 Chipper is my personal experiment. I needed to learn about classes and observables. Context API has been great for me in all my personal projects, but using observables solves more problems.
 
-<br>
-
 ## Wat? 🗿
 
 - minimal setup
@@ -16,8 +14,6 @@ Chipper is my personal experiment. I needed to learn about classes and observabl
 - built-in capabilities for handling status of async functions
 - almost framework-agnostic (because there's a React hook you can use if you want)
 
-<br>
-
 ## Why?
 
 I got bored with conventional solutions (looking at you, Redux). Don't get me wrong, [Redux](https://redux.js.org/) is a great tool (especially now, ever since [redux-toolkit](https://redux-toolkit.js.org/) is a thing), but setting up global store and making it work with [TypeScript](https://www.typescriptlang.org/) is always a treat...<br>
@@ -25,8 +21,6 @@ I got bored with conventional solutions (looking at you, Redux). Don't get me wr
 Since I don't get to set up fresh redux store very often, I always have to re-learn the docs in order to have the whole thing working the way I like it. Well, not anymore.
 
 Chipper's API reflects my idea of a perfect (experience may vary 🤷) state-management tool that handles async and TypeScript out of the box with microscopic setup.
-
-<br>
 
 ## How?
 
@@ -61,13 +55,9 @@ const MyComponent = () => {
 
 And that's pretty much it. Congratulations, you just spent 10 seconds setting up your global state. Time well spent, now go, procrastinate some more 🤡
 
-<br>
-
 ## What now?
 
 [CLICK HERE](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/example.md) for more elaborate example or [CLICK HERE](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/CHIPPER.md) to read the docs
-
-<br>
 
 ## TODO
 
@@ -84,10 +74,6 @@ Chipper is ready to use (I wouldn't say it's production ready, but I am going to
   I have never paid much attention to performance between tools - Redux, Context API, Zustand, Jotai - they all perform the same to me. All I care about is dev-ex and neither has fully satisfied my way of coding
 - suggestions?
 
-<br>
-
 ---
-
-<br>
 
 ## [READ THE DOCS](./CHIPPER.md)
