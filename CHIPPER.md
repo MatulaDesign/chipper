@@ -4,7 +4,7 @@ I intend these docs to be as thorough as possible, but expect some less importan
 
 ## Chipper elements
 
-The tool consists of four exported elements: [Chipper](#1-chipper), [ChipperConveyor](#3-chipperconveyor), [useChip](#2-usechip) and [useChipper](#4-usechipper);
+The tool consists of four exported elements: [Chipper](#1-chipper), [ChipperConveyor](#3-chipperconveyor), [useChip](#2-usechip) and [useChipper](#4-usechipper).
 You don't have to use hooks, because state can be accessed from outside of react components. It won't be reactive though, so no re-rendering logic to keep everything in check.
 
 ### 1) `Chipper`
@@ -62,7 +62,7 @@ This hook works only with exported `Chipper` class instance.
 
 #### a) read
 
-Use `data` and/or `status` props from the returned object to read the chip.
+Use `data` and/or `status` props from the returned object to read the chip.<br>
 `data` can be changed by you, `status` is handled by the plugin:
 
 ```javascript
@@ -80,7 +80,7 @@ const MyComponent = () => {
 
 #### b) write
 
-You can use `useChip` itself to add data to your state by passing something as a second argument. If the chip with given key exists, the second argument is ignored, because `Chipper.createQueue()` takes precedence.
+You can use `useChip` itself to add data to your state by passing something as a second argument. If the chip with given key exists, the second argument is ignored, because `createQueue()` takes precedence.
 
 ```javascript
 const user = useChip('user', { details: 'redacted' }).get().data; // { uid: "12345", name: "piglet" };
@@ -88,7 +88,7 @@ const user = useChip('user', { details: 'redacted' }).get().data; // { uid: "123
 const chips = useChip('eatChips', { better: 'not' }).get().data; // { better: 'not' };
 ```
 
-Please be advised that Chipper does not let you change the data shape. If you created a chip somewhere earlier in your code, the `set()` method will `console.log` an error if you try to change the data scheme.
+Please be advised that Chipper does not let you change the data shape. If you created a chip somewhere earlier in your code, the `set()` method will `console.error` an error if you try to change the data scheme.
 
 ```javascript
 Chipper.queryQueue("user", { uid: "12345", name: "piglet" });

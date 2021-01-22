@@ -1,6 +1,6 @@
 # Chipper
 
-Chipper is a micro state-management tool aimed at perfect (for me 🤡 ) developer experience and idiot-proof 🙈 🙉 🙊 (because I need it) API.<br>
+Chipper is a minimalistic state-management tool aimed at perfect (for me 🤡 ) developer experience and idiot-proof 🙈 🙉 🙊 (because I need it) API.<br>
 
 Chipper is my personal experiment. I needed to learn about classes and observables. Context API has been great for me in all my personal projects, but using observables solves more problems.
 
@@ -11,8 +11,8 @@ Chipper is my personal experiment. I needed to learn about classes and observabl
 - no excess re-renders
 - react and react-native friendly
 - [immer](https://immerjs.github.io/immer/docs/introduction) is used somewhere inside (easier that way) 🎉
+- you can access state from outside of React components
 - built-in capabilities for handling status of async functions
-- almost framework-agnostic (because there's a React hook you can use if you want)
 
 ## Why?
 
