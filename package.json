@@ -1,6 +1,6 @@
 {
   "name": "@lumberyard/chipper",
-  "version": "1.0.0",
+  "version": "1.0.01",
   "description": "A minimalistic state-management tool for your megalomaniac React needs",
   "author": "Mat Sas",
   "license": "MIT",
