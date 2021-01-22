@@ -1,7 +1,7 @@
 {
   "name": "@lumberyard/chipper",
   "version": "1.0.0",
-  "description": "A minimalistic state-management tool for your React needs",
+  "description": "A minimalistic state-management tool for your megalomaniac React needs",
   "author": "Mat Sas",
   "license": "MIT",
   "files": [
@@ -40,12 +40,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://%40MatulaDesign@github.com/MatulaDesign/chipper.git"
+    "url": "git+https://%40MatulaDesign@github.com/MatulaDesign/lumberyard-chipper.git"
   },
   "bugs": {
-    "url": "https://github.com/MatulaDesign/chipper/issues"
+    "url": "https://github.com/MatulaDesign/lumberyard-chipper/issues"
   },
-  "homepage": "https://github.com/MatulaDesign/chipper#readme",
+  "homepage": "https://github.com/MatulaDesign/lumberyard-chipper#readme",
   "devDependencies": {
     "@testing-library/react-hooks": "^5.0.2",
     "@types/jest": "^26.0.20",
@@ -69,5 +69,6 @@
     "immer": ">= 7.0.0",
     "react": ">= 16.8.0",
     "react-dom": ">= 16.8.0"
-  }
+  },
+  "dependencies": {}
 }
