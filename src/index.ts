@@ -10,7 +10,7 @@ export type IStatus = {
 };
 export type IData = Record<string, unknown> | string | null | number;
 export type IQue<T = IData> = { key: string; update: IUpdater<T> };
-export type IQueue<T = IData> = [string, T][];
+export type IQueue<T = IData> = [string, T | null][];
 export type IUpdater<T = IData> = IChip<T> | ((chip: IChip<T>) => IChip<T>);
 export interface IOptions<T = any> {
   timeout?: number;
