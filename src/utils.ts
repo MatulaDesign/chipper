@@ -1,31 +1,31 @@
-import produce from "immer";
+import produce from 'immer';
 
-import { IUpdate, IDraft, IData, IChip, IQuery, IOptions } from ".";
+import { IUpdate, IDraft, IData, IChip, IQuery, IOptions } from '.';
 
 export function newChip<T = IData>(data: T) {
-  return { data, status: { type: "IDLE" } } as IChip;
+  return { data, status: { type: 'IDLE' } } as IChip;
 }
 
 export function equalityCheck(chop: any, chip: any) {
-  const isObject = (v: IData) => typeof v === "object";
-  const objectKeys = (o: IData) => (isObject(o) ? Object.keys(o).sort() : []);
+  const isObject = (v: IData) => typeof v === 'object';
+  const objectKeys = (o: IData) => (isObject(o) ? Object.keys(o!).sort() : []);
   const isEqual = (chop: any, chip: any) => JSON.stringify(chop) === JSON.stringify(chip);
 
-  if (!chop) return "update"; // update if empty
+  if (!chop) return 'update'; // update if empty
   // check if objects have same keys
   if (isEqual(objectKeys(chop), objectKeys(chip))) {
     // check if objects are equal
-    if (isEqual(chop, chip)) return "skip";
-    return "update";
-  } else return "warn";
+    if (isEqual(chop, chip)) return 'skip';
+    return 'update';
+  } else return 'warn';
 }
 
 export function chopper<T = IData>(chop: IChip, update: IUpdate<T>) {
   let updated;
   if (!chop.data) {
-    if (typeof update !== "function") updated = produce(chop.data, () => update);
+    if (typeof update !== 'function') updated = produce(chop.data, () => update);
     else updated = produce({}, update as IDraft);
-  } else if (typeof update !== "function") updated = produce(chop.data, () => update);
+  } else if (typeof update !== 'function') updated = produce(chop.data, () => update);
   else updated = produce(chop.data, update as IDraft);
   return { ...chop, data: updated } as IChip;
 }
@@ -34,7 +34,7 @@ export function mockAsync<T = IData>(data: T, timeout?: number) {
   return new Promise<T>((resolve, reject) => {
     setTimeout(() => {
       if (data !== undefined) resolve(data);
-      else reject({ message: "Chipper: mockAsync() failed" });
+      else reject({ message: 'Chipper: mockAsync() failed' });
     }, timeout || 0);
   });
 }
@@ -42,10 +42,10 @@ export function mockAsync<T = IData>(data: T, timeout?: number) {
 export async function setAsync<T = IData>(
   Query: IQuery,
   update: Promise<T | void>,
-  options?: IOptions<T>
+  options?: IOptions<T>,
 ) {
   function initAsync() {
-    Query.set({ ...Query.get(), status: { type: "LOADING" } });
+    Query.set({ ...Query.get(), status: { type: 'LOADING' } });
     return options?.onInit && options.onInit();
   }
   async function runAsync() {
@@ -56,12 +56,12 @@ export async function setAsync<T = IData>(
     }
   }
   function failAsync(message: string) {
-    Query.set({ ...Query.get(), status: { type: "ERROR", message } });
+    Query.set({ ...Query.get(), status: { type: 'ERROR', message } });
     return options?.onError && options.onError(message);
   }
   function finishAsync(resp: T) {
     const data = options?.wrapResp ? options.wrapResp(resp) : resp;
-    Query.set({ data, status: { type: "SUCCESS" } });
+    Query.set({ data, status: { type: 'SUCCESS' } });
     return options?.onSuccess && options.onSuccess(data);
   }
 

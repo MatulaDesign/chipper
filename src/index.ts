@@ -8,7 +8,7 @@ export type IStatus = {
   type: 'LOADING' | 'IDLE' | 'SUCCESS' | 'ERROR';
   message?: IError;
 };
-export type IData = Record<string, unknown> | string;
+export type IData = Record<string, unknown> | string | null | number;
 export type IQue<T = IData> = { key: string; update: IUpdater<T> };
 export type IQueue<T = IData> = [string, T][];
 export type IUpdater<T = IData> = IChip<T> | ((chip: IChip<T>) => IChip<T>);
