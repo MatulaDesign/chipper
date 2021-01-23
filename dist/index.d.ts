@@ -5,7 +5,7 @@ export declare type IStatus = {
     type: 'LOADING' | 'IDLE' | 'SUCCESS' | 'ERROR';
     message?: IError;
 };
-export declare type IData = Record<string, unknown> | string;
+export declare type IData = Record<string, unknown> | string | null | number;
 export declare type IQue<T = IData> = {
     key: string;
     update: IUpdater<T>;
@@ -44,25 +44,25 @@ export declare class ChipperConveyor extends ChipperQueue {
     queryQueue<T = IData>(key: string, data?: T): {
         get: (k?: string | undefined) => IChip<IData> | undefined;
         cut: (k?: string | undefined) => boolean;
-        set: <R = (T & string) | (T & Record<string, unknown>)>(data: R | IChip<R>, k?: string | undefined) => void;
+        set: <R = (T & null) | (T & string) | (T & number) | (T & Record<string, unknown>)>(data: R | IChip<R>, k?: string | undefined) => void;
     };
 }
 declare const Chipper: ChipperConveyor;
 export declare function useChipper<T = IData>(instance: ChipperConveyor, key: string, data?: T): {
-    data: string | Record<string, unknown> | undefined;
+    data: string | number | Record<string, unknown> | null | undefined;
     status: IStatus;
     api: {
-        set: <R = (T & string) | (T & Record<string, unknown>)>(data: R | IChip<R>, k?: string | undefined) => void;
+        set: <R = (T & null) | (T & string) | (T & number) | (T & Record<string, unknown>)>(data: R | IChip<R>, k?: string | undefined) => void;
         cut: (k?: string | undefined) => boolean;
         get: (k?: string | undefined) => IChip<IData>;
     };
     set: (update: IUpdate<T>, options?: IOptions<T> | undefined) => Promise<void>;
 };
 export declare function useChip<T = IData>(key: string, data?: T): {
-    data: string | Record<string, unknown> | undefined;
+    data: string | number | Record<string, unknown> | null | undefined;
     status: IStatus;
     api: {
-        set: <R = (T & string) | (T & Record<string, unknown>)>(data: R | IChip<R>, k?: string | undefined) => void;
+        set: <R = (T & null) | (T & string) | (T & number) | (T & Record<string, unknown>)>(data: R | IChip<R>, k?: string | undefined) => void;
         cut: (k?: string | undefined) => boolean;
         get: (k?: string | undefined) => IChip<IData>;
     };
