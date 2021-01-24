@@ -45,16 +45,10 @@ const MyComponent = () => {
 
 And that's pretty much it. Congratulations, you just spent 10 seconds setting up your global state. Time well spent, now go, procrastinate some more
 
-### What now?
+## What now?
 
-<br>
+### [Chipper demo](https://codesandbox.io/s/chipper-demo-tgi65)
 
-## [Chipper demo](https://codesandbox.io/s/chipper-demo-tgi65)
-
-<br>
-
-## [READ ON](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/HELLO.md)
-
-<br>
+### [READ ON](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/HELLO.md)
 
 [Click here](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/example.md) for more elaborate example or [click here](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/CHIPPER.md) to read the docs
