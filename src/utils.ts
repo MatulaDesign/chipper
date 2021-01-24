@@ -6,18 +6,37 @@ export function newChip<T = IData>(data: T) {
   return { data, status: { type: 'IDLE' } } as IChip;
 }
 
-export function equalityCheck(chop: any, chip: any) {
-  const isObject = (v: IData) => typeof v === 'object';
-  const objectKeys = (o: IData) => (isObject(o) ? Object.keys(o!).sort() : []);
-  const isEqual = (chop: any, chip: any) => JSON.stringify(chop) === JSON.stringify(chip);
-
+export function equalityAction(chop: any, chip: any) {
   if (!chop) return 'update'; // update if empty
-  // check if objects have same keys
-  if (isEqual(objectKeys(chop), objectKeys(chip))) {
-    // check if objects are equal
-    if (isEqual(chop, chip)) return 'skip';
-    return 'update';
-  } else return 'warn';
+
+  const isObject = (o: any) => o && typeof o === 'object';
+  const objectKeys = (o: any) => (isObject(o) ? Object.keys(o) : [o]);
+  const isEqual = (chop: any, chip: any) => JSON.stringify(chop) === JSON.stringify(chip);
+  const chipKeys = objectKeys(chip);
+  const actions = [];
+
+  for (let key of chipKeys) {
+    const chipVal = chip[key];
+    const chopVal = chop[key];
+    const areValsEqual = isEqual(chopVal, chipVal);
+    const areTypesEqual = typeof chipVal === typeof chopVal;
+    const areValsKeysEqual = isEqual(objectKeys(chipVal), objectKeys(chopVal));
+    const areValsObjects = isObject(chipVal) && isObject(chopVal);
+
+    if (!chopVal) actions.push('update');
+    else if (areTypesEqual) {
+      if (!areValsEqual) {
+        if (!areValsKeysEqual) {
+          if (areValsObjects) actions.push('warn');
+          else actions.push('update');
+        } else actions.push(equalityAction(chopVal, chipVal));
+      } else actions.push('skip');
+    } else actions.push('warn');
+  }
+
+  if (actions.includes('warn')) return 'warn';
+  if (actions.includes('update')) return 'update';
+  return 'skip';
 }
 
 export function chopper<T = IData>(chop: IChip, update: IUpdate<T>) {

@@ -1,7 +1,7 @@
 ## More elaborate example
 
 ```javascript
-import Chipper, { useChip } from 'chipper';
+import Chipper, { useChip } from '@lumberyard/chipper';
 
 Chipper.createQueue([
   ['user', { uid: '12345', name: 'piglet' }],

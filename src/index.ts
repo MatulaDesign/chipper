@@ -106,7 +106,7 @@ function chipperService<T = IData>(Query: IQuery, key: string) {
         const mocked = Utils.mockAsync<T>(chip.data as T, options?.timeout);
         await Utils.setAsync<T>(Query, mocked, options);
       } else {
-        const check = Utils.equalityCheck(chop.data, chip.data);
+        const check = Utils.equalityAction(chop.data, chip.data);
         if (check === 'update') Query.set(chip);
         if (check === 'warn') console.error(`Chipper: You're trying to change "${key}" data shape`);
       }
@@ -119,7 +119,7 @@ function chipperService<T = IData>(Query: IQuery, key: string) {
       const chip = Query.get(k);
       if (!chip) console.error(`Chipper: chip "${k}" doesn't exist`);
       else if (chip.data) {
-        const check = Utils.equalityCheck(chip.data, data);
+        const check = Utils.equalityAction(chip.data, data);
         if (check === 'update') Query.set(data, k || key);
         if (check === 'warn') {
           console.error(`Chipper: You're trying to change "${k || key}" data shape`);

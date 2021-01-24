@@ -47,6 +47,14 @@ And that's pretty much it. Congratulations, you just spent 10 seconds setting up
 
 ### What now?
 
-[READ ON](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/HELLO.md)
+<br>
 
-[CLICK HERE](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/example.md) for more elaborate example or [CLICK HERE](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/CHIPPER.md) to read the docs
+## [Chipper demo](https://codesandbox.io/s/chipper-demo-tgi65)
+
+<br>
+
+## [READ ON](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/HELLO.md)
+
+<br>
+
+[Click here](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/example.md) for more elaborate example or [click here](https://github.com/MatulaDesign/lumberyard-chipper/blob/main/CHIPPER.md) to read the docs

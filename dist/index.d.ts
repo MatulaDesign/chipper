@@ -10,7 +10,7 @@ export declare type IQue<T = IData> = {
     key: string;
     update: IUpdater<T>;
 };
-export declare type IQueue<T = IData> = [string, T][];
+export declare type IQueue<T = IData> = [string, T | null][];
 export declare type IUpdater<T = IData> = IChip<T> | ((chip: IChip<T>) => IChip<T>);
 export interface IOptions<T = any> {
     timeout?: number;

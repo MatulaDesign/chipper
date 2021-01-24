@@ -12,7 +12,7 @@ You don't have to use hooks, because state can be accessed from outside of react
 First, let's set up the initial store (you can omit this step):
 
 ```javascript
-import Chipper from 'chipper';
+import Chipper from '@lumberyard/chipper';
 
 Chipper.createQueue([
   ['user', { uid: '12345', name: 'piglet' }],
@@ -31,7 +31,7 @@ As you can see, we pass an array of tuples to a `createQueue()` method. We do th
 You can go commando and use `Chipper`'s methods to read and set up the store yourself from somewhere random and/or outside of React using side effects of `queryQueue()` method. You don't have to use `createQueue()` to populate the state, however it takes precedence over other methods. Just keep in mind that `set()` methods used across this plugin either overwrite existing state or create a new one.
 
 ```javascript
-import Chipper from 'chipper';
+import Chipper from '@lumberyard/chipper';
 
 // add to Chipper somewhere in your code
 Chipper.queryQueue('user', { uid: '12345', name: 'piglet' });
@@ -66,7 +66,7 @@ Use `data` and/or `status` props from the returned object to read the chip.<br>
 `data` can be changed by you, `status` is handled by the plugin:
 
 ```javascript
-import { useChip } from 'chipper';
+import { useChip } from '@lumberyard/chipper';
 
 const MyComponent = () => {
   const { data, status } = useChip('user');
@@ -107,7 +107,7 @@ I decided to weld some doors shut, to enforce consistency in the code. I figured
 `useChip` gives you a bunch of ways to add data to your state:
 
 ```javascript
-import { useChip } from 'chipper';
+import { useChip } from '@lumberyard/chipper';
 
 const MyComponent = () => {
   const { set } = useChip('user');
@@ -141,7 +141,7 @@ const MyComponent = () => {
 Please be advised that `api.set()` is similar to `set()` method: it'll inform you when you try to overwrite an existing chip's data scheme.
 
 ```javascript
-import { useChip } from 'chipper';
+import { useChip } from '@lumberyard/chipper';
 
 const MyComponent = () => {
   const { api } = useChip('user');
@@ -163,7 +163,7 @@ const MyComponent = () => {
 
 ```javascript
 // my-secluded-state.js
-import { ChipperConveyor } from 'chipper';
+import { ChipperConveyor } from '@lumberyard/chipper';
 
 export const FruitBasket = new ChipperConveyor();
 
@@ -179,7 +179,7 @@ This hook will work with both `Chipper` and `ChipperConveyor`. It is `useChip` o
 
 ```javascript
 // somewhere in your code
-import Chipper, { ChipperConveyor, useChipper } from "chipper";
+import Chipper, { ChipperConveyor, useChipper } from "@lumberyard/chipper";
 
 import { FruitBasket } from './my-secluded-state';
 
