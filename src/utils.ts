@@ -6,32 +6,59 @@ export function newChip<T = IData>(data: T) {
   return { data, status: { type: 'IDLE' } } as IChip;
 }
 
+// look at this magnificent example of spaghetti machine learning! ;)
 export function equalityAction(chop: any, chip: any) {
-  if (!chop) return 'update'; // update if empty
+  const isEqual = (chop: any, chip: any) => JSON.stringify(chop) === JSON.stringify(chip);
+
+  if (isEqual(chop, chip)) return 'skip';
+  if (chop === null && typeof chip === 'undefined') return 'warn';
+  if (chop === null || typeof chop === 'undefined') return 'update';
 
   const isObject = (o: any) => o && typeof o === 'object';
-  const objectKeys = (o: any) => (isObject(o) ? Object.keys(o) : [o]);
-  const isEqual = (chop: any, chip: any) => JSON.stringify(chop) === JSON.stringify(chip);
-  const chipKeys = objectKeys(chip);
-  const actions = [];
+  const areTypesEqual = (a: any, b: any) => typeof a === typeof b;
 
-  for (let key of chipKeys) {
-    const chipVal = chip[key];
+  if (!isObject(chop)) {
+    if (areTypesEqual(chop, chip)) {
+      if (isEqual(chop, chip)) return 'skip';
+      return 'update';
+    } else {
+      if (chip === null) return 'update';
+      return 'warn';
+    }
+  }
+
+  const objectKeys = (o: any) => (isObject(o) ? Object.keys(o) : [o]);
+  const chopKeys = objectKeys(chop);
+
+  const actions = [];
+  for (let key of chopKeys) {
     const chopVal = chop[key];
+    const chipVal = chip[key];
+    const isArray = (o: any) => Array.isArray(o);
     const areValsEqual = isEqual(chopVal, chipVal);
-    const areTypesEqual = typeof chipVal === typeof chopVal;
     const areValsKeysEqual = isEqual(objectKeys(chipVal), objectKeys(chopVal));
+    const areValsArrays = isArray(chipVal) && isArray(chopVal);
     const areValsObjects = isObject(chipVal) && isObject(chopVal);
 
-    if (!chopVal) actions.push('update');
-    else if (areTypesEqual) {
+    if (areTypesEqual(chopVal, chipVal)) {
       if (!areValsEqual) {
         if (!areValsKeysEqual) {
-          if (areValsObjects) actions.push('warn');
+          if (areValsArrays) actions.push('update');
+          else if (isArray(chopVal) && !isArray(chipVal)) {
+            if (chipVal === null) actions.push('update');
+            else actions.push('warn');
+          } else if (!isArray(chopVal) && isArray(chipVal)) actions.push('warn');
+          else if (areValsObjects) actions.push(equalityAction(chopVal, chipVal));
           else actions.push('update');
         } else actions.push(equalityAction(chopVal, chipVal));
-      } else actions.push('skip');
-    } else actions.push('warn');
+      } else {
+        if (areTypesEqual(chopVal, chipVal)) actions.push('update');
+        else actions.push('skip');
+      }
+    } else {
+      if (chipVal === null) actions.push('update');
+      else actions.push('warn');
+    }
   }
 
   if (actions.includes('warn')) return 'warn';
@@ -76,12 +103,17 @@ export async function setAsync<T = IData>(
   }
   function failAsync(message: string) {
     Query.set({ ...Query.get(), status: { type: 'ERROR', message } });
+    console.error(message);
     return options?.onError && options.onError(message);
   }
   function finishAsync(resp: T) {
     const data = options?.wrapResp ? options.wrapResp(resp) : resp;
-    Query.set({ data, status: { type: 'SUCCESS' } });
-    return options?.onSuccess && options.onSuccess(data);
+    const check = equalityAction(Query.get().data, data);
+    if (check === 'update') {
+      Query.set({ data, status: { type: 'SUCCESS' } });
+      return options?.onSuccess && options.onSuccess(data);
+    } else if (check === 'warn') failAsync(`Chipper: You're trying to change data shape`);
+    else failAsync(`Chipper: Update was skipped due to equal datasets`);
   }
 
   async function* createAsyncGenerator() {

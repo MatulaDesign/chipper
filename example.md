@@ -64,5 +64,6 @@ const MyComponentB = () => {
 }
 ```
 
+[Chipper demo](https://codesandbox.io/s/chipper-demo-tgi65)
 [README](HELLO.md)<br>
 [READ THE DOCS](CHIPPER.md)

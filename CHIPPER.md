@@ -1,6 +1,8 @@
 # Chipper Docs
 
-I intend these docs to be as thorough as possible, but expect some less important features not being described, because I simply didn't think about them at the moment of writing.
+I intend for these docs to be as thorough as possible, but expect some less minor things not being mentioned here, because I simply didn't think about them at the moment of writing.
+
+[Chipper demo](https://codesandbox.io/s/chipper-demo-tgi65)
 
 ## Chipper elements
 
@@ -51,14 +53,14 @@ Chipper.queryQueue('user').get(); // { uid: "12345", name: "piglet" }
 Chipper.queryQueue('user').get('theme'); // { dark: false, color: "purple" }
 ```
 
-**Note:** These are some of the building blocks of `useChip` hook.
+**Note:** These are some of the building blocks of Chipper's hooks.<br>
 I had a case of having to update state outside of React once, so I wanted to make sure I'll have an easy way of adding data from wherever, whenever.
 
 ### 2) `useChip`
 
 If you work with React/React-Native do yourself a favor and `useChip`. It's easier that way.<br>
 `useChip` handles re-rendering and subscription to state of matching components that use it.<br>
-This hook works only with exported `Chipper` class instance.
+This hook works directly with `Chipper` class instance exported from the plugin. Just keep that in mind, when you create your [own Chipper's instances](#3-chipperconveyor`).
 
 #### a) read
 
@@ -88,7 +90,7 @@ const user = useChip('user', { details: 'redacted' }).get().data; // { uid: "123
 const chips = useChip('eatChips', { better: 'not' }).get().data; // { better: 'not' };
 ```
 
-Please be advised that Chipper does not let you change the data shape. If you created a chip somewhere earlier in your code, the `set()` method will `console.error` an error if you try to change the data scheme.
+Please be advised that Chipper does not let you change the data shape. If you created a chip somewhere earlier in your code, the `set()` method will `console.error` if you try to change the data scheme.
 
 ```javascript
 Chipper.queryQueue("user", { uid: "12345", name: "piglet" });
@@ -257,7 +259,7 @@ const chip = {
 - #### `enqueue(key: string, update: IUpdater): void`
 
   This method adds updated data to Chipper's queue (or subscribes to state, if you will).
-  In case of Chipper, `update` is derived from `React.useState()`'s dispatch, but you could throw in here whatever value, if you want to reuse the logic for something else.
+  In case of Chipper, `update` argument that we pass here is derived from `React.useState()`'s dispatch, but you could throw in here whatever value, if you want to reuse the logic for something else.
 
   ```javascript
   Chipper.enqueue(key, updater);

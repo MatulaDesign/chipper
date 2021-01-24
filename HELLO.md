@@ -62,6 +62,8 @@ Chipper is ready to use (I wouldn't say it's production ready, but I am going to
 
 ---
 
+### [Chipper demo](https://codesandbox.io/s/chipper-demo-tgi65)
+
 ### [READ THE DOCS](CHIPPER.md)
 
 [README](README.md)
