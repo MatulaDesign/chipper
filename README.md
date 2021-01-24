@@ -1,6 +1,6 @@
 # Chipper
 
-A minimalistic state-management tool for your megalomaniac React needs
+A minimalistic state-management tool for your megalomaniac React needs.
 
 ### Wat?
 
@@ -27,7 +27,7 @@ In the code
 ```javascript
 import Chipper, { useChip } from "@lumberyard/chipper";
 
-Chipper.createQueue([
+Chipper.loadChips([
   ["user", { uid: "12345", name: "piglet" }],
   ["theme", { dark: true, color: "pink" }],
 ]);

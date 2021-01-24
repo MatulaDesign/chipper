@@ -1,6 +1,15 @@
 # Chipper Docs
 
-I intend for these docs to be as thorough as possible, but expect some less minor things not being mentioned here, because I simply didn't think about them at the moment of writing.
+#### It is important that you pick a proper tool for the job, and however Chipper supports local async actions, it **DOES NOT** replace proper external async tools like [react-query](https://github.com/tannerlinsley/react-query) or [SWR](https://github.com/vercel/swr), so please you these to carry out querrying the vast emptiness of the interwebs.<br>
+
+Chipper's async capabilities exist mostly for querrying internal APIs of the devices you run your apps on.<br>
+My local async needs usually cover grabbing some built-in API's response (eg. local storage) in react-native or using client APIs created by your cloud services provider (eg. Firebase authentication).<br>
+I always have to write some weird hooks to properly handle these smaller async actions and then pass their responses to my state. Chipper handles these local async actions and integrates it smoothly with your state.
+
+Chipper is a tool (pun intended), not a library or a plugin. It is an input/output device that takes your data and either updates selected subscribed components or it tells you why it didn't. So, the original data shape can never be overwritten and Chipper will tell you about it (without updating and possibly breaking the UI).
+My recommendation is to use Chipper when you know what your data shape is and you know you won't need to overwrite it with some new data.
+
+I intend for these docs to be as thorough as possible, but expect some minor things not being mentioned here, because I simply didn't think about them at the moment of writing.
 
 [Chipper demo](https://codesandbox.io/s/chipper-demo-tgi65)
 
@@ -16,41 +25,41 @@ First, let's set up the initial store (you can omit this step):
 ```javascript
 import Chipper from '@lumberyard/chipper';
 
-Chipper.createQueue([
+Chipper.loadChips([
   ['user', { uid: '12345', name: 'piglet' }],
   ['theme', { dark: true, color: 'pink' }],
   ['friends', { joey: "how you doin'?" }],
 ]);
 
 // or you can add bits of state from anywhere you like outside of
-Chipper.createQueue([['user', { uid: '12345', name: 'piglet' }]]);
+Chipper.loadChips([['user', { uid: '12345', name: 'piglet' }]]);
 // or in a component
-Chipper.createQueue([['theme', { dark: true, color: 'pink' }]]);
+Chipper.loadChips([['theme', { dark: true, color: 'pink' }]]);
 ```
 
-As you can see, we pass an array of tuples to a `createQueue()` method. We do that, because the store is built on top of a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) object (why rewrite something that works great out of the box, right?)<br>
+As you can see, we pass an array of tuples to a `loadChips()` method. We do that, because we inform Chipper about possible subscribcions the store is built on top of a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) object (why rewrite something that works great out of the box, right?)<br>
 
-You can go commando and use `Chipper`'s methods to read and set up the store yourself from somewhere random and/or outside of React using side effects of `queryQueue()` method. You don't have to use `createQueue()` to populate the state, however it takes precedence over other methods. Just keep in mind that `set()` methods used across this plugin either overwrite existing state or create a new one.
+You can go commando and use `Chipper`'s methods to read and set up the store yourself from somewhere random and/or outside of React using side effects of `queryChips()` method. You don't have to use `loadChips()` to populate the state, however it takes precedence over other methods. Just keep in mind that `set()` methods used across this plugin either overwrite existing state or create a new one.
 
 ```javascript
 import Chipper from '@lumberyard/chipper';
 
 // add to Chipper somewhere in your code
-Chipper.queryQueue('user', { uid: '12345', name: 'piglet' });
+Chipper.queryChips('user', { uid: '12345', name: 'piglet' });
 
 // or
-Chipper.queryQueue('user').set({ uid: '12345', name: 'piglet' });
+Chipper.queryChips('user').set({ uid: '12345', name: 'piglet' });
 
 // or if for some reason you want to change one chip from another chip
-Chipper.queryQueue('theme').get(); // { dark: true, color: "pink" }
-Chipper.queryQueue('user').set({ dark: false, color: 'purple' }, 'theme'); // notice the second argument "theme"
-Chipper.queryQueue('theme').get(); // { dark: false, color: "purple" }
+Chipper.queryChips('theme').get(); // { dark: true, color: "pink" }
+Chipper.queryChips('user').set({ dark: false, color: 'purple' }, 'theme'); // notice the second argument "theme"
+Chipper.queryChips('theme').get(); // { dark: false, color: "purple" }
 
 // grab default from Chipper somewhere else in your code
-Chipper.queryQueue('user').get(); // { uid: "12345", name: "piglet" }
+Chipper.queryChips('user').get(); // { uid: "12345", name: "piglet" }
 
 // or if you want to grab some chip's state from another chip
-Chipper.queryQueue('user').get('theme'); // { dark: false, color: "purple" }
+Chipper.queryChips('user').get('theme'); // { dark: false, color: "purple" }
 ```
 
 **Note:** These are some of the building blocks of Chipper's hooks.<br>
@@ -82,7 +91,7 @@ const MyComponent = () => {
 
 #### b) write
 
-You can use `useChip` itself to add data to your state by passing something as a second argument. If the chip with given key exists, the second argument is ignored, because `createQueue()` takes precedence.
+You can use `useChip` itself to add data to your state by passing something as a second argument. If the chip with given key exists, the second argument is ignored, because `loadChips()` takes precedence.
 
 ```javascript
 const user = useChip('user', { details: 'redacted' }).get().data; // { uid: "12345", name: "piglet" };
@@ -93,7 +102,7 @@ const chips = useChip('eatChips', { better: 'not' }).get().data; // { better: 'n
 Please be advised that Chipper does not let you change the data shape. If you created a chip somewhere earlier in your code, the `set()` method will `console.error` if you try to change the data scheme.
 
 ```javascript
-Chipper.queryQueue("user", { uid: "12345", name: "piglet" });
+Chipper.queryChips("user", { uid: "12345", name: "piglet" });
 
 const MyComponent = () => {
   const { set } = useChip('user');
@@ -169,7 +178,7 @@ import { ChipperConveyor } from '@lumberyard/chipper';
 
 export const FruitBasket = new ChipperConveyor();
 
-FruitBasket.createQueue([
+FruitBasket.loadChips([
   ['apple', { shiny: true, poisoned: 'definitely not' }],
   ['pear', { shape: 'pear-ly', tastes: 'poor-ly' }],
 ]);
@@ -218,15 +227,15 @@ const chip = {
 
 ### 1) `Chipper`/`ChipperConveyor` props
 
-- #### `createQueue(queue: IQueue): void`
+- #### `loadChips(queue: IQueue): void`
 
   This method loads data into Chipper. It takes the tuple's second item (value/data) and turns it into a `chip` that gets stored inside `Map()` instance
 
   ```javascript
-  Chipper.createQueue([['user', { uid: '12345', name: 'piglet' }]]);
+  Chipper.loadChips([['user', { uid: '12345', name: 'piglet' }]]);
   ```
 
-- #### `queryQueue(key: string, data: IData): IQuery`
+- #### `queryChips(key: string, data: IData): IQuery`
 
   This method returns an object:
 
@@ -235,26 +244,30 @@ const chip = {
   - `cut(k?: string): boolean`
 
   These are low level methods, that let you read and write Chipper's state:<br>
-  a) `queryQueue('user').get()` - you can either pass no argument (Chipper will use the default key from `queryQueue()` method) or you can pass a string to grab a matching chip<br>
+  a) `queryChips('user').get()` - you can either pass no argument (Chipper will use the default key from `queryChips()` method) or you can pass a string to grab a matching chip<br>
 
   ```javascript
   api.get(); // grabs data and status from 'user' state
   api.get('theme'); // grabs data and status from 'theme' state
   ```
 
-  b) `queryQueue('user').set(data)` - requires either plain data or a `chip` object. If non-chip-shaped-object is passed, Chipper turns it into a `chip` to handle status changes. It also takes a string as a second argument, which lets you direct Chipper onto other chips<br>
+  b) `queryChips('user').set(data)` - requires either plain data or a `chip` object. If non-chip-shaped-object is passed, Chipper turns it into a `chip` to handle status changes. It also takes a string as a second argument, which lets you direct Chipper onto other chips<br>
 
   ```javascript
   api.set({ dark: false, color: 'purple' }); // updates 'user' data
   api.set({ dark: false, color: 'purple' }, 'theme'); // updates 'theme' data
   ```
 
-  c) `queryQueue('user').cut()` - similar to `.get()`, but removes the chip
+  c) `queryChips('user').cut()` - similar to `.get()`, but removes the chip
 
   ```javascript
   api.cut(); // removes 'user' state
   api.cut('theme'); // removes 'theme' state
   ```
+
+- #### `chips: Map<string, IChip>[]`
+
+  Chips is a Map object storing the state.
 
 - #### `enqueue(key: string, update: IUpdater): void`
 
@@ -285,10 +298,6 @@ const chip = {
 
   Queue is an array of updated values that we use to pinpoint which components should be updated.
 
-- #### `chips: Map<string, IChip>[]`
-
-  Chips is a Map object storing the state.
-
 ### 2) `useChip`/`useChipper` props
 
 - #### `data: T = IData`
@@ -303,7 +312,7 @@ const chip = {
   }
   ```
 
-  ...that will be modified internally by the plugin if you use the hook's `set()` method either with an async function passed as data or with `timeout` option for "regular" data. Chipper [doesn't give you methods\*](<#api-chipper.queryqueue()>) to update the `status` manually.
+  ...that will be modified internally by the plugin if you use the hook's `set()` method either with an async function passed as data or with `timeout` option for "regular" data. Chipper [doesn't give you methods\*](<#api-chipper.queryChips()>) to update the `status` manually.
 
 - #### `set: (update: IUpdate, options?: IOptions): void`
 
@@ -389,9 +398,9 @@ const chip = {
   })
   ```
 
-- #### `api: Chipper.queryQueue()`
+- #### `api: Chipper.queryChips()`
 
-  The `api` property is taken 1:1 from `queryQueue()` method used in `Chipper` class, however, since it's used inside `useChip`, it informs other components about changes made to their state so they can re-render and update properly.
+  The `api` property is taken 1:1 from `queryChips()` method used in `Chipper` class, however, since it's used inside `useChip`, it informs other components about changes made to their state so they can re-render and update properly.
 
   **TIP:** Technically, you can use `api`'s `set` property to set `status` of every piece of state, but you HAVE TO pass a `chip` (not just plain data) as a first argument. This might come in handy if you wanna kick some other subscribed component into `LOADING` state
 

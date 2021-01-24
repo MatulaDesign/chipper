@@ -3,7 +3,7 @@
 ```javascript
 import Chipper, { useChip } from '@lumberyard/chipper';
 
-Chipper.createQueue([
+Chipper.loadChips([
   ['user', { uid: '12345', name: 'piglet' }],
   ['theme', { dark: true, color: 'pink' }],
 ]);

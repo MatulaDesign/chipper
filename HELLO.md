@@ -27,7 +27,7 @@ In the code
 ```javascript
 import Chipper, { useChip } from "@lumberyard/chipper";
 
-Chipper.createQueue([
+Chipper.loadChips([
   ["user", { uid: "12345", name: "piglet" }],
   ["theme", { dark: true, color: "pink" }],
 ]);
@@ -53,8 +53,6 @@ Chipper is ready to use (I wouldn't say it's production ready, but I am going to
 
 - implement developer tools
 - unit tests (you're not my real mom!)
-- add persistance with [storage](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) and/or [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)?<br>
-  **Note**: react-native-async-storage is kinda heavy, soooo I don't wanna do it, but it'll work with both react and react-native. I will probably add some util function in the docs for folks who might want to have seamless experience with connecting global store and session/local storage
 - performance fixes?<br>
   **Note**: I don't really know that much about performance-wise programming yet, but as far as my own testing of Chipper goes, it works, lol 🙈 <br>
   I have never paid much attention to performance between tools - Redux, Context API, Zustand, Jotai - they all perform the same to me. All I care about is dev-ex and neither has fully satisfied my way of coding

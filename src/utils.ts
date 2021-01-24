@@ -19,12 +19,8 @@ export function equalityAction(chop: any, chip: any) {
 
   if (!isObject(chop)) {
     if (areTypesEqual(chop, chip)) {
-      if (isEqual(chop, chip)) return 'skip';
-      return 'update';
-    } else {
-      if (chip === null) return 'update';
-      return 'warn';
-    }
+      return isEqual(chop, chip) ? 'skip' : 'update';
+    } else return chip === null ? 'update' : 'warn';
   }
 
   const objectKeys = (o: any) => (isObject(o) ? Object.keys(o) : [o]);
@@ -103,7 +99,6 @@ export async function setAsync<T = IData>(
   }
   function failAsync(message: string) {
     Query.set({ ...Query.get(), status: { type: 'ERROR', message } });
-    console.error(message);
     return options?.onError && options.onError(message);
   }
   function finishAsync(resp: T) {
@@ -112,8 +107,8 @@ export async function setAsync<T = IData>(
     if (check === 'update') {
       Query.set({ data, status: { type: 'SUCCESS' } });
       return options?.onSuccess && options.onSuccess(data);
-    } else if (check === 'warn') failAsync(`Chipper: You're trying to change data shape`);
-    else failAsync(`Chipper: Update was skipped due to equal datasets`);
+    } else if (check === 'warn') console.warn(`ChipperAsync: You're trying to change data shape`);
+    else console.warn(`ChipperAsync: Update was skipped due to equal datasets`);
   }
 
   async function* createAsyncGenerator() {
