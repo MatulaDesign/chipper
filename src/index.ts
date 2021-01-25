@@ -8,12 +8,13 @@ export type IStatus = {
   type: 'LOADING' | 'IDLE' | 'SUCCESS' | 'ERROR';
   message?: IError;
 };
-export type IData = Record<string, unknown> | string | null | number | any;
+export type IData = Record<string, unknown> | number | string;
 export type IQue<T = IData> = { key: string; update: IUpdater<T> };
 export type IQueue<T = IData> = [string, T | null][];
 export type IUpdater<T = IData> = IChip<T> | ((chip: IChip<T>) => IChip<T>);
 export interface IOptions<T = any> {
   timeout?: number;
+  skipStatus?: boolean;
   onInit?: () => void;
   onSuccess?: (resp: T) => void;
   onError?: (error: IError) => void;
@@ -30,7 +31,7 @@ export interface IQuery {
 }
 export type IDraft<T = IData> = (data: Draft<T>) => void;
 export type ISet<T = IData> = T | IDraft<T>;
-export type IUpdate<T = IData> = ISet<T> | Promise<T | void>;
+export type IUpdate<T = IData> = ISet<T>;
 export type IDispatch<T = IData> = (chip: Draft<IChip<T>>) => IChip<T>;
 
 class ChipperQueue {
@@ -62,7 +63,7 @@ export class ChipperConveyor extends ChipperQueue {
     if (!this.chips.has(key)) this.chips.set(key, Utils.newChip(data));
     return {
       get: (k?: string) => this.chips.get(k || key),
-      cut: (k?: string) => this.chips.delete(k || key),
+      cut: () => console.warn('feature currently unavailable'),
       set: <R = T & IData>(data: R | IChip<R>, k?: string) => {
         if (typeof data !== 'function' && !(data instanceof Promise)) {
           let chip = data as IChip;
@@ -81,12 +82,11 @@ function ChipperOperator<T = IData>(chipper: ChipperConveyor, key: string, data?
   const query = chipper.queryChips(key, data);
   const chip = query.get();
   const [, dispatch] = React.useState(chip) as [never, IDispatch];
-  const isLoading = chip?.status?.type !== 'LOADING';
 
   React.useEffect(() => {
     chipper.enqueue(key, dispatch);
     return () => {
-      !isLoading && chipper.dequeue(dispatch);
+      chipper.dequeue(dispatch);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -96,21 +96,12 @@ function ChipperOperator<T = IData>(chipper: ChipperConveyor, key: string, data?
 
 function ChipperService<T = IData>(Query: IQuery, key: string) {
   const chop = Query.get() as IChip;
-  const isLoading = chop?.status?.type === 'LOADING';
 
-  async function set(update: IUpdate<T>, options?: IOptions<T>) {
-    if (!isLoading) {
-      const chip = Utils.chopper(chop, update);
-      if (update instanceof Promise) await Utils.setAsync<T>(Query, update, options);
-      else if (options?.timeout! > 0) {
-        const mocked = Utils.mockAsync<T>(chip.data as T, options?.timeout);
-        await Utils.setAsync<T>(Query, mocked, options);
-      } else {
-        const check = Utils.equalityAction(chop.data, chip.data);
-        if (check === 'update') Query.set(chip);
-        if (check === 'warn') console.error(`Chipper: You're trying to change "${key}" data shape`);
-      }
-    }
+  async function set(update: IUpdate<T>) {
+    const chip = Utils.chopper(chop, update);
+    const check = Utils.equalityAction(chop.data, chip.data);
+    if (check === 'update') Query.set(chip);
+    if (check === 'warn') console.error(`Chipper: You're trying to change "${key}" data shape`);
   }
 
   const api = {

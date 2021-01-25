@@ -5,7 +5,7 @@ export declare type IStatus = {
     type: 'LOADING' | 'IDLE' | 'SUCCESS' | 'ERROR';
     message?: IError;
 };
-export declare type IData = Record<string, unknown> | string | null | number;
+export declare type IData = Record<string, unknown> | string | null | number | any;
 export declare type IQue<T = IData> = {
     key: string;
     update: IUpdater<T>;
@@ -39,32 +39,32 @@ declare class ChipperQueue {
     convey(key: string, chip: IChip): void;
 }
 export declare class ChipperConveyor extends ChipperQueue {
-    chips: Map<string, IChip<IData>>;
-    createQueue(queue: IQueue): void;
-    queryQueue<T = IData>(key: string, data?: T): {
-        get: (k?: string | undefined) => IChip<IData> | undefined;
+    chips: Map<string, IChip<any>>;
+    loadChips(queue: IQueue): void;
+    queryChips<T = IData>(key: string, data?: T): {
+        get: (k?: string | undefined) => IChip<any> | undefined;
         cut: (k?: string | undefined) => boolean;
-        set: <R = (T & null) | (T & string) | (T & number) | (T & Record<string, unknown>)>(data: R | IChip<R>, k?: string | undefined) => void;
+        set: <R = any>(data: R | IChip<R>, k?: string | undefined) => void;
     };
 }
 declare const Chipper: ChipperConveyor;
 export declare function useChipper<T = IData>(instance: ChipperConveyor, key: string, data?: T): {
-    data: string | number | Record<string, unknown> | null | undefined;
+    data: any;
     status: IStatus;
     api: {
-        set: <R = (T & null) | (T & string) | (T & number) | (T & Record<string, unknown>)>(data: R | IChip<R>, k?: string | undefined) => void;
+        set: <R = any>(data: R | IChip<R>, k?: string | undefined) => void;
         cut: (k?: string | undefined) => boolean;
-        get: (k?: string | undefined) => IChip<IData>;
+        get: (k?: string | undefined) => IChip<any>;
     };
     set: (update: IUpdate<T>, options?: IOptions<T> | undefined) => Promise<void>;
 };
 export declare function useChip<T = IData>(key: string, data?: T): {
-    data: string | number | Record<string, unknown> | null | undefined;
+    data: any;
     status: IStatus;
     api: {
-        set: <R = (T & null) | (T & string) | (T & number) | (T & Record<string, unknown>)>(data: R | IChip<R>, k?: string | undefined) => void;
+        set: <R = any>(data: R | IChip<R>, k?: string | undefined) => void;
         cut: (k?: string | undefined) => boolean;
-        get: (k?: string | undefined) => IChip<IData>;
+        get: (k?: string | undefined) => IChip<any>;
     };
     set: (update: IUpdate<T>, options?: IOptions<T> | undefined) => Promise<void>;
 };

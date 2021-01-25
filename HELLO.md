@@ -49,7 +49,7 @@ const MyComponent = () => {
 
 ### TODO
 
-Chipper is ready to use (I wouldn't say it's production ready, but I am going to use it in production when I make sure it doesn't suck). You guys' help would speed things up, if you want to contribute. Todos below are sugary improvements, which would further sweeten our time with this tool:
+Chipper is a work in progress. I wanna use it in production at some point. You guys' help would speed things up, if you want to contribute. Todos below are sugary improvements, which would further sweeten our time with this tool:
 
 - implement developer tools
 - unit tests (you're not my real mom!)

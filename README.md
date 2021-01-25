@@ -2,6 +2,8 @@
 
 A minimalistic state-management tool for your megalomaniac React needs.
 
+**Note:** Chipper is a work in progress
+
 ### Wat?
 
 - minimal setup
